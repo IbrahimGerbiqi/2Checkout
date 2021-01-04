@@ -26,7 +26,7 @@ app.get("/", function (req, res) {
     });
 });
 
-app.post("/success", function (req, res) {
+app.get("/success", function (req, res) {
     console.log("qetu erdh");
     res.render("success");
 });
