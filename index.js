@@ -11,7 +11,7 @@ const stripe = require("stripe")(
     "sk_test_51HyzFwBYJ6atGlFKsB9dKGrzhfhQLHuFlEgYn9adQveF0qt5FiFfyBQ0usRpbqblwQObcTacJxvl9dCU0prFv20L00STXu55Ov"
 );
 
-const port = process.env.PORT || 3000;
+const port = 3000;
 
 app.use(bodyparser.urlencoded({ extended: false }));
 app.use(bodyparser.json());
@@ -26,7 +26,7 @@ app.get("/", function (req, res) {
     });
 });
 
-app.get("/success", function (req, res) {
+app.post("/success", function (req, res) {
     console.log("qetu erdh");
     res.render("success");
 });
