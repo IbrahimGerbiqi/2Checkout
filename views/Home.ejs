@@ -1,0 +1,207 @@
+<!-- <!DOCTYPE html> 
+<html> 
+<title>Stripe Payment Demo</title> 
+<body> 
+    <h3>Welcome to Payment Gateway</h3> 
+    <form action="payment" method="POST"> 
+       <script 
+          src="//checkout.stripe.com/v2/checkout.js"
+          class="stripe-button"
+          data-key="<%= key %>" 
+          data-amount="2500" 
+          data-currency="eur" 
+          data-name="Ibrahim Gerbiqi" 
+          data-description="Handmade Art and Craft Products" 
+          data-locale="auto" > 
+        </script>
+    </form> 
+
+    <form action="/v1/invoices" method="POST">
+        <script>
+            stripe.redirectToCheckout({
+                sessionId: Success.id,
+                mode: "payment",
+                successUrl: Success.success_url,
+                cancelUrl: Success.cancel_url
+            })
+            .then(function(result) {
+                // If `redirectToCheckout` fails due to a browser or network
+                // error, display the localized error message to your customer
+                // using `result.error.message`.
+            });
+        </script>
+        <button type="submit">submit</button>
+    </form>
+</body> 
+</html>  -->
+
+<html>
+    <head>
+        <title>Buy cool new product</title>
+        <link
+            rel="stylesheet"
+            href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+            integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+            crossorigin="anonymous"
+        />
+    </head>
+    <body>
+        <div class="container">
+            <div class="row mt-5">
+                <div
+                    class="col-md-3"
+                    style="display: flex; justify-content: center"
+                >
+                    <div>
+                        <span style="font-weight: bold">
+                            10€/ <span> 5 Credits </span>
+                        </span>
+                    </div>
+                    <div>
+                        <button id="checkout-button1" class="btn btn-primary">
+                            Checkout
+                        </button>
+                    </div>
+                </div>
+                <div
+                    class="col-md-3"
+                    style="display: flex; justify-content: center"
+                >
+                    <div>
+                        <span style="font-weight: bold">
+                            20€/ <span> 15 Credits </span>
+                        </span>
+                    </div>
+                    <div>
+                        <button id="checkout-button2" class="btn btn-primary">
+                            Checkout
+                        </button>
+                    </div>
+                </div>
+                <div
+                    class="col-md-3"
+                    style="display: flex; justify-content: center"
+                >
+                    <div>
+                        <span style="font-weight: bold">
+                            35€/ <span> 50 Credits </span>
+                        </span>
+                    </div>
+                    <div>
+                        <button id="checkout-button3" class="btn btn-primary">
+                            Checkout
+                        </button>
+                    </div>
+                </div>
+                <div
+                    class="col-md-3"
+                    style="display: flex; justify-content: center"
+                >
+                    <div>
+                        <span style="font-weight: bold">
+                            35€/ <span> 50 Credits 2Checkout</span>
+                        </span>
+                    </div>
+                    <div>
+                        <button id="checkout-button4" class="btn btn-primary">
+                            <a
+                                href="https://secure.2checkout.com/checkout/buy?merchant=250589678645&return-url=http%3A%2F%2Fexample.com%2Fsuccess&return-type=redirect&tpl=default&prod=CVDWN43XWA&qty=1&signature=a98517f3bbaa9f24ad2d84c360ed9d6018c4ea7adb9897d39794c285ab4737fa"
+                                >Checkout</a
+                            >
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script
+            src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
+            integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"
+        ></script>
+        <script
+            src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"
+            integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl"
+            crossorigin="anonymous"
+        ></script>
+        <script src="https://js.stripe.com/v3/"></script>
+        <script type="text/javascript">
+            var stripe = Stripe(
+                "pk_test_51HyzFwBYJ6atGlFKHSXnvfHr9aiXcR8vpVt3G3avkhmHi46xBoLGWoxQaLhhHEf2VGbNOk5zU5GDM6jMRgHHRJUX00Sl8yrH9E"
+            );
+            var checkoutButton1 = document.getElementById("checkout-button1");
+            var checkoutButton2 = document.getElementById("checkout-button2");
+            var checkoutButton3 = document.getElementById("checkout-button3");
+            var checkoutButton4 = document.getElementById("checkout-button4");
+
+            checkoutButton1.addEventListener("click", function () {
+                fetch("/create-checkout-session1", {
+                    method: "POST",
+                })
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (session) {
+                        return stripe.redirectToCheckout({
+                            sessionId: session.id,
+                        });
+                    })
+                    .then(function (result) {
+                        if (result.error) {
+                            alert(result.error.message);
+                        }
+                    })
+                    .catch(function (error) {
+                        console.error("Error:", error);
+                    });
+            });
+            checkoutButton2.addEventListener("click", function () {
+                fetch("/create-checkout-session2", {
+                    method: "POST",
+                })
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (session) {
+                        return stripe.redirectToCheckout({
+                            sessionId: session.id,
+                        });
+                    })
+                    .then(function (result) {
+                        if (result.error) {
+                            alert(result.error.message);
+                        }
+                    })
+                    .catch(function (error) {
+                        console.error("Error:", error);
+                    });
+            });
+            checkoutButton3.addEventListener("click", function () {
+                fetch("/create-checkout-session3", {
+                    method: "POST",
+                })
+                    .then(function (response) {
+                        return response.json();
+                    })
+                    .then(function (session) {
+                        console.log("session", session);
+                        // return stripe.redirectToCheckout({
+                        //     sessionId: session.id,
+                        // });
+                    })
+                    .then(function (result) {
+                        if (result.error) {
+                            alert(result.error.message);
+                        }
+                    })
+                    .catch(function (error) {
+                        console.error("Error:", error);
+                    });
+            });
+        </script>
+    </body>
+</html>
