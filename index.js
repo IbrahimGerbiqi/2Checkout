@@ -28,7 +28,9 @@ app.get("/", function (req, res) {
 
 app.post("/success", function (req, res) {
     console.log("qetu erdh");
-    res.render("success");
+    res.status(200).json({
+        message: "Qetu erdh",
+    });
 });
 
 app.listen(port, function (error) {
